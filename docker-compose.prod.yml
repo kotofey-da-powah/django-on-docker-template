@@ -5,16 +5,16 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
-    command: daphne -b 0.0.0.0 core.asgi:application
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./backend/:/usr/src/backend/
     expose:
       - 8000
     env_file:
-      - ./backend/.env.prod
+      - ./backend/.env
     depends_on:
       - db
-      - redis
+#      - redis
 
   db:
     image: postgres:12-alpine
@@ -25,11 +25,11 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=template
 
-  redis:
-    image: redis
-    command: ["redis-server", "--appendonly", "yes"]
-    volumes:
-      - redis_data:/data
+#  redis:
+#    image: redis
+#    command: ["redis-server", "--appendonly", "yes"]
+#    volumes:
+#      - redis_data:/data
 
   nginx:
     build: ./nginx
@@ -40,4 +40,4 @@ services:
 
 volumes:
   postgres_data:
-  redis_data:
+#  redis_data:

@@ -1,4 +1,4 @@
-daphne
+gunicorn
 django
 psycopg2-binary
 whitenoise
