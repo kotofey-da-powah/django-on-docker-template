@@ -1,6 +1,6 @@
 # Django on Docker Template
 
-This is ready-to-run Django template 
+This is ready-to-run Docker template with **Django + Postgres + Redis + Gunicorn + Nginx**
 
 ![Django on Docker](https://cdn.filestackcontent.com/rJf1U9MTraWZDCJWjQoE)
 
