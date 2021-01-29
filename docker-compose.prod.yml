@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    command: daphne -b 0.0.0.0 core.asgi:application
+    volumes:
+      - ./backend/:/usr/src/backend/
+    expose:
+      - 8000
+    env_file:
+      - ./backend/.env.prod
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=template
+
+  redis:
+    image: redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:

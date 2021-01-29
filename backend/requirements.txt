@@ -1,0 +1,4 @@
+daphne
+django
+psycopg2-binary
+whitenoise
